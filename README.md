@@ -17,7 +17,16 @@ Messenger — учебное Android-приложение (Kotlin)
 - Gradle Wrapper 8.4 (поставляется в репозитории)
 
 ## Сборка
-Быстрый путь:
+Быстрый старт через Makefile (macOS/Linux):
+
+```bash
+make build      # собрать Debug APK
+make install    # установить на устройство (проверяет наличие adb)
+make run        # запустить MainActivity
+make logs       # логи по тегам приложения
+```
+
+Или скриптом:
 
 ```bash
 ./build_debug.sh
@@ -40,6 +49,8 @@ APK будет здесь: `app/build/outputs/apk/debug/app-debug.apk`.
 ./install_and_run.sh
 ```
 
+Скрипт проверяет наличие `adb` и подсказывает установку на macOS: `brew install android-platform-tools`.
+
 Вручную (опционально):
 
 ```bash
@@ -57,6 +68,7 @@ adb shell am start -n com.example.messenger/.MainActivity
 - `app/src/main/res/navigation/nav_graph.xml` — граф навигации
 - `app/src/main/res/menu/bottom_nav_menu.xml` — пункты нижней навигации
 - `build_debug.sh`, `install_and_run.sh` — вспомогательные скрипты
+ - `Makefile` — упрощённые команды (build/install/run/logs/open-apk/copy-release)
 
 ## Полезно знать
 - Тема: `Theme.Material3.DayNight.NoActionBar`
