@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Messenger</string>
+    
+    <!-- Bottom Navigation -->
+    <string name="navigation_news">Новости</string>
+    <string name="navigation_profile">Профиль</string>
+    <string name="navigation_settings">Настройки</string>
+    
+    <!-- News Feed Fragment -->
+    <string name="news_feed_title">Новостная лента</string>
+    <string name="news_feed_placeholder">Здесь будет отображаться новостная лента</string>
+    
+    <!-- Profile Fragment -->
+    <string name="profile_title">Профиль пользователя</string>
+    <string name="profile_name">Имя:</string>
+    <string name="profile_name_value">Иван Иванов</string>
+    <string name="profile_email">Email:</string>
+    <string name="profile_email_value">ivan.ivanov@example.com</string>
+    <string name="profile_phone">Телефон:</string>
+    <string name="profile_phone_value">+7 (999) 123-45-67</string>
+    <string name="profile_bio">О себе:</string>
+    <string name="profile_bio_value">Android разработчик</string>
+    
+    <!-- Settings Fragment -->
+    <string name="settings_title">Настройки</string>
+    <string name="settings_theme">Тёмная тема</string>
+    <string name="settings_notifications">Уведомления</string>
+    <string name="settings_language">Язык приложения</string>
+</resources>
