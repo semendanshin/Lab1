@@ -10,11 +10,16 @@ Messenger — учебное Android-приложение (Kotlin)
 - Material 3 UI: Toolbar, карточки, типографика
 - Экран настроек с переключателем темы (светлая/тёмная)
 - Логирование жизненного цикла Activity/Fragment
+- Архитектура MVVM (Model-View-ViewModel)
+- Работа с сетью через Retrofit
+- Локальное кэширование данных в Room
+- Использование Kotlin Coroutines
+- Swipe-to-refresh для обновления новостей
 
 ## Требования
 - JDK 17 (Temurin/Oracle)
 - Android SDK (compileSdk 36, targetSdk 36)
-- Gradle Wrapper 8.4 (поставляется в репозитории)
+- Gradle Wrapper 8.10 (поставляется в репозитории)
 
 ## Сборка
 Быстрый старт через Makefile (macOS/Linux):
