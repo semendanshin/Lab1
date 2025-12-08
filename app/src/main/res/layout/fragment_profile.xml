@@ -43,24 +43,35 @@
                     android:text="@string/profile_title"
                     style="@style/TextAppearance.Material3.TitleLarge"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="16dp" />
 
                 <!-- Name -->
-                <TextView
-                    android:id="@+id/tv_name_label"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_name"
-                    style="@style/TextAppearance.Material3.LabelLarge"
-                    android:layout_marginTop="8dp" />
+                    android:hint="@string/profile_name"
+                    android:layout_marginBottom="12dp">
 
-                <TextView
-                    android:id="@+id/tv_name_value"
-                    android:layout_width="wrap_content"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Status -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_name_value"
-                    style="@style/TextAppearance.Material3.BodyLarge"
-                    android:layout_marginBottom="12dp" />
+                    android:hint="Статус"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Email -->
                 <TextView
@@ -93,21 +104,6 @@
                     android:text="@string/profile_phone_value"
                     style="@style/TextAppearance.Material3.BodyLarge"
                     android:layout_marginBottom="12dp" />
-
-                <!-- Bio -->
-                <TextView
-                    android:id="@+id/tv_bio_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profile_bio"
-                    style="@style/TextAppearance.Material3.LabelLarge" />
-
-                <TextView
-                    android:id="@+id/tv_bio_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profile_bio_value"
-                    style="@style/TextAppearance.Material3.BodyLarge" />
 
             </LinearLayout>
 

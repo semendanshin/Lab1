@@ -1,7 +1,6 @@
 package com.example.messenger.ui.settings
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,31 +8,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.messenger.databinding.FragmentSettingsBinding
+import com.example.messenger.ui.MainViewModel
 
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
-    
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var viewModel: MainViewModel
 
     companion object {
         private const val TAG = "SettingsFragment"
-        private const val PREFS_NAME = "AppSettings"
-        private const val KEY_DARK_THEME = "dark_theme"
-        private const val KEY_NOTIFICATIONS = "notifications"
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d(TAG, "onAttach: Fragment прикреплён к активности")
-        sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate: Fragment создан")
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -54,30 +51,28 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupSettings() {
-        // Загрузка сохранённых настроек
-        val isDarkTheme = sharedPreferences.getBoolean(KEY_DARK_THEME, false)
-        val isNotificationsEnabled = sharedPreferences.getBoolean(KEY_NOTIFICATIONS, true)
-        
-        binding.switchTheme.isChecked = isDarkTheme
-        binding.switchNotifications.isChecked = isNotificationsEnabled
-        
-        // Обработчик переключателя темы
-        binding.switchTheme.setOnCheckedChangeListener { _, isChecked ->
-            Log.d(TAG, "Тема изменена: ${if (isChecked) "Тёмная" else "Светлая"}")
-            sharedPreferences.edit().putBoolean(KEY_DARK_THEME, isChecked).apply()
+        // Observe Theme
+        viewModel.isDarkTheme.observe(viewLifecycleOwner) { isDark ->
+            if (binding.switchTheme.isChecked != isDark) {
+                binding.switchTheme.isChecked = isDark
+            }
             
-            // Применение темы
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            // Apply theme
+            val mode = if (isDark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            if (AppCompatDelegate.getDefaultNightMode() != mode) {
+                AppCompatDelegate.setDefaultNightMode(mode)
             }
         }
+
+        // Switch Listener
+        binding.switchTheme.setOnCheckedChangeListener { _, isChecked ->
+            Log.d(TAG, "Тема изменена: ${if (isChecked) "Тёмная" else "Светлая"}")
+            viewModel.setDarkTheme(isChecked)
+        }
         
-        // Обработчик переключателя уведомлений
+        // Notifications switch (UI only for now as not required in ViewModel)
         binding.switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             Log.d(TAG, "Уведомления: ${if (isChecked) "Включены" else "Выключены"}")
-            sharedPreferences.edit().putBoolean(KEY_NOTIFICATIONS, isChecked).apply()
         }
     }
 
