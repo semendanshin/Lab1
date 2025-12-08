@@ -6,13 +6,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.messenger.data.api.RetrofitClient
+import com.example.messenger.data.db.AppDatabase
+import com.example.messenger.data.repository.MessageRepository
 import com.example.messenger.databinding.FragmentNewsFeedBinding
 
 class NewsFeedFragment : Fragment() {
 
     private var _binding: FragmentNewsFeedBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: NewsViewModel
+    private lateinit var adapter: MessageAdapter
 
     companion object {
         private const val TAG = "NewsFeedFragment"
@@ -41,6 +50,36 @@ class NewsFeedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated: View создан")
+
+        // Initialize Data Layer
+        val database = AppDatabase.getDatabase(requireContext())
+        val repository = MessageRepository(database.messageDao(), RetrofitClient.api)
+        val factory = NewsViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[NewsViewModel::class.java]
+
+        // Setup RecyclerView
+        adapter = MessageAdapter()
+        binding.rvMessages.layoutManager = LinearLayoutManager(context)
+        binding.rvMessages.adapter = adapter
+
+        // Observe Data
+        viewModel.messages.observe(viewLifecycleOwner) { messages ->
+            adapter.submitList(messages)
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.swipeRefreshLayout.isRefreshing = isLoading
+        }
+
+        // Setup Listeners
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshMessages()
+        }
+        
+        // Initial load if empty (optional, but good UX)
+        if (viewModel.messages.value.isNullOrEmpty()) {
+            viewModel.refreshMessages()
+        }
     }
 
     override fun onStart() {
