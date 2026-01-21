@@ -34,8 +34,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="16dp"
                     android:contentDescription="@string/profile_title"
-                    android:src="@drawable/ic_profile"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
+                    android:src="@drawable/ic_profile" />
 
                 <TextView
                     android:layout_width="wrap_content"

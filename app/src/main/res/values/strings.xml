@@ -9,6 +9,12 @@
     <!-- News Feed Fragment -->
     <string name="news_feed_title">Новостная лента</string>
     <string name="news_feed_placeholder">Здесь будет отображаться новостная лента</string>
+    <string name="avatar">Аватар</string>
+    <string name="like">Лайк</string>
+    <string name="new_message">Новое сообщение</string>
+    <string name="offline_message">Нет подключения к сети</string>
+    <string name="notification_sync_title">Синхронизация</string>
+    <string name="notification_sync_body">Новые данные получены</string>
     
     <!-- Profile Fragment -->
     <string name="profile_title">Профиль пользователя</string>

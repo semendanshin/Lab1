@@ -14,5 +14,7 @@ data class Message(
     val title: String,
     
     @SerializedName("body")
-    val body: String
+    val body: String,
+
+    val isLiked: Boolean = false
 )

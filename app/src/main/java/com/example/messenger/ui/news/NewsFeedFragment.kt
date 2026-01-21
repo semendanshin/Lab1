@@ -9,7 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.example.messenger.R
 import com.example.messenger.data.api.RetrofitClient
 import com.example.messenger.data.db.AppDatabase
 import com.example.messenger.data.repository.MessageRepository
@@ -54,17 +57,27 @@ class NewsFeedFragment : Fragment() {
         // Initialize Data Layer
         val database = AppDatabase.getDatabase(requireContext())
         val repository = MessageRepository(database.messageDao(), RetrofitClient.api)
-        val factory = NewsViewModelFactory(repository)
+        val factory = NewsViewModelFactory(requireActivity().application, repository)
         viewModel = ViewModelProvider(this, factory)[NewsViewModel::class.java]
 
         // Setup RecyclerView
-        adapter = MessageAdapter()
+        adapter = MessageAdapter { message ->
+            viewModel.toggleLike(message)
+        }
         binding.rvMessages.layoutManager = LinearLayoutManager(context)
         binding.rvMessages.adapter = adapter
 
         // Observe Data
         viewModel.messages.observe(viewLifecycleOwner) { messages ->
             adapter.submitList(messages)
+        }
+
+        viewModel.isOnline.observe(viewLifecycleOwner) { isOnline ->
+            binding.offlineBanner.isVisible = !isOnline
+            binding.swipeRefreshLayout.isEnabled = isOnline
+            if (!isOnline) {
+                Snackbar.make(binding.root, getString(R.string.offline_message), Snackbar.LENGTH_SHORT).show()
+            }
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -74,6 +87,10 @@ class NewsFeedFragment : Fragment() {
         // Setup Listeners
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.refreshMessages()
+        }
+
+        binding.fabNewMessage.setOnClickListener {
+            Toast.makeText(requireContext(), getString(R.string.new_message), Toast.LENGTH_SHORT).show()
         }
         
         // Initial load if empty (optional, but good UX)
